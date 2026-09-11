@@ -5,6 +5,8 @@ test('UI Controls', async  ({page})=> {
     const userName  = page.locator ('input#username');
     const signIN = page.locator("[id='signInBtn']");
     const dropdown = page.locator("select.form-control");
+    const documentLink1 = page.locator("[href*=documents-request]");
+    const documentLink2 = page.locator("[href*=job-ready]");
     await dropdown.selectOption("consult");
     const radio = page.locator(".customradio").last();
     await radio.click();
