@@ -89,18 +89,42 @@ test ('Browser first test', async  ({browser})=>
    await expect(confirmation).toContainText(" Thankyou for the order. ");
 
     //print orderid in console
-
-    const orderID1 = page.locator(".em-spacer-1 .ng-star-inserted");
+     
+    const orderIDLocator = page.locator(".em-spacer-1 .ng-star-inserted");
     //const orderID = page.locator(".em-spacer-1 .ng-star-inserted").last();
 
-    console.log(orderID1.textContent());
-   // console.log(orderID);
+     const orderID = await orderIDLocator.textContent();
+
+   console.log("Order ID Created: ", orderID);
+
+// search order 6aa9bf7752cfef03ed0c8353 from order page
+
+    const orderHistory = page.locator("button[routerlink='/dashboard/myorders']");
+    await orderHistory.click();
+    
+    const orderList = page.locator("tr.ng-star-inserted");
+    await orderList.first().waitFor();
+
+    const ordercount = await orderList.count();
+   // const  orderFound = false;
+    for (let i=0; i<ordercount; ++i)
+  {
+      const oID = await orderList.nth(i).locator("th").textContent();
+      //console.log("checking:",oID);
+
+      if (orderID.includes(oID.trim()))
+      {
+      console.log(oID.trim());
+
+        break;
+      }
+
+    }
 
 
 
 
-
-
+page.pause();
 
 }
 )
