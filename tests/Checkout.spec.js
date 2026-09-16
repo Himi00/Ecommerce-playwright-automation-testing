@@ -114,17 +114,19 @@ test ('Browser first test', async  ({browser})=>
 
       if (orderID.includes(oID.trim()))
       {
-      console.log(oID.trim());
+        orderList.nth(i).locator("button").first().click();
+      //console.log(oID.trim());
 
         break;
-      }
-
+      } 
     }
-
+      const orderIDDetails = await page.locator("[class='col-text -main']").textContent();
+      expect (orderID.includes(orderIDDetails)).toBeTruthy;
 
 
 
 page.pause();
 
 }
+
 )
