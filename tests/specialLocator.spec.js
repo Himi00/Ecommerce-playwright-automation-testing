@@ -22,9 +22,9 @@ test  ('Playwright Special Locator', async  ({page})=>
 
 })
 // test specific timeout
-const {test,expect} = require ('@playwright/test');
 test  ('test level wait', async  ({page})=>
-{
+{   
+    test.setTimeout(60000);
     const slowExpect = expect.configure({timeout:90000});
     await page.goto ("https://rahulshettyacademy.com/angularpractice/");
     await page.locator(".form-control").first().fill("hi chu");
@@ -47,4 +47,4 @@ test  ('test level wait', async  ({page})=>
 
 
 
-})
+});

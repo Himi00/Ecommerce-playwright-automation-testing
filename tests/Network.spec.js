@@ -1,5 +1,5 @@
 const {test,expect, request} = require ('@playwright/test');
-const {APiUtils} = require('./utils/APiUtils').default;
+const {APiUtils} = require('./utils/APiUtils');
 
     const loginpayload = {userEmail:"himi.ecommerce@gmail.com",userPassword:"uDY@T8H67AGYsb@"}
     const orderPayLoad = {orders:[{country: "Cuba", productOrderedId: "6960eae1c941646b7a8b3ed3"}]}
