@@ -2,14 +2,14 @@ const {test,expect, request} = require ('@playwright/test');
 const {APiUtils} = require('./utils/APiUtils').default;
 
     const loginpayload = {userEmail:"himi.ecommerce@gmail.com",userPassword:"uDY@T8H67AGYsb@"}
-    const orderPayLoad = {orders:[{country:"Cuba",productOrderedId:"6ab9b9ac2be7a4bc2b7444e3"}]}
-
+    const orderPayLoad = {orders:[{country: "Cuba", productOrderedId: "6960eae1c941646b7a8b3ed3"}]}
+    const fakePayLoad = {data:[],message:"No Orders"};
 
     let token;
     let orderID;   
     let response; 
 
-
+    
  test.beforeAll(async()=>
 {
     const apiContext = await request.newContext();
@@ -29,6 +29,28 @@ test('API', async  ({page})=> {
 
 await page.goto("https://rahulshettyacademy.com/client");
 
+
+await page.route("https://rahulshettyacademy.com/api/ecom/order/get-orders-for-customer/*",
+
+async route=>
+{
+   const response = await page.request.fetch(route.request());
+   let body = JSON.stringify(fakePayLoad);
+   route.fulfill(
+    {
+            response,
+            body,
+    }
+   )
+
+}
+
+
+)
+
+
+
+
 // place order
    
 await page.pause();
@@ -37,27 +59,11 @@ await page.pause();
 
     const orderHistory = page.locator("button[routerlink='/dashboard/myorders']");
     await orderHistory.click();
+    page.waitForResponse("https://rahulshettyacademy.com/api/ecom/order/get-orders-for-customer/*")
+    console.log(await page.locator(".mt-4").textContent());
+
     
-    const orderList = page.locator("tr.ng-star-inserted");
-    await orderList.first().waitFor();
-
-    const ordercount = await orderList.count();
-   // const  orderFound = false;
-    for (let i=0; i<ordercount; ++i)
-  {
-      const oID = await orderList.nth(i).locator("th").textContent();
-      //console.log("checking:",oID);
-
-      if (response.orderID.includes(oID.trim()))
-      {
-       await orderList.nth(i).locator("button").first().click();
-      //console.log(oID.trim());
-
-        break;
-      } 
-    }
-      const orderIDDetails = await page.locator("[class='col-text -main']").textContent();
-
+   
 
 
 
